@@ -69,7 +69,11 @@ $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $records_per_page = 5;
 // calculate for the query LIMIT clause
 $from_record_num = ($records_per_page * $page) - $records_per_page;
-// delete message prompt will be here
+$action = isset($_GET['action']) ? $_GET['action'] : "";
+// if it was redirected from delete.php
+if($action=='deleted'){
+	echo "<div class='alert alert-success'>Record was deleted.</div>";
+}
 // select all data
 // select data for current page
 $query = "SELECT id, nama, jawatan, gred, No_KP, No_Telefon, sektor, unit, model_pc, model_laptop, model_printer, catatan FROM user_info ORDER BY id DESC
@@ -81,7 +85,7 @@ $stmt->execute();
 // this is how to get number of rows returned
 $num = $stmt->rowCount();
 // link to create record form
-    echo "<a href='create.php' class='btn btn-primary m-b-1em'>Create New User</a>";
+    echo "<a href='create.php' class='btn btn-primary m-b-1em'>Daftar Pegawai/Aset Baru</a>";
 //check if more than 0 record found
     if($num>0){
 	//start table
@@ -170,5 +174,16 @@ else{
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        <script type='text/javascript'>
+// confirm record deletion
+function delete_user( id ){
+	var answer = confirm('Are you sure to delete?');
+	if (answer){
+		// if user clicked ok,
+		// pass the id to delete.php and execute the delete query
+		window.location = 'delete.php?id=' + id;
+	}
+}
+</script>
     </body>
 </html>
